@@ -21,12 +21,30 @@ namespace NordicArts {
                     if (m_pLogger) { m_pLogger->log("Destroyed Models"); }
                 }
 
+                Model *Manager::addModel(std::string cName, std::vector<glm::vec3> vVerticies, std::string cVertex, std::string cFragment) {
+                    if (m_pLogger) {
+                        m_pLogger->log("Starting Model 2");
+                        m_pLogger->log("Vertex:" + cVertex);
+                        m_pLogger->log("Fragment: " + cFragment);
+                    }
+
+                    Model *pModel = new Model(cName);
+                    pModel->initalize(vVerticies, vVerticies.size(), cVertex, cFragment);
+
+                    m_pModels[m_iModels] = pModel;
+
+                    if (m_pLogger) { m_pLogger->log("Started Model 2"); }
+
+                    m_iModels++;
+
+                    return pModel;                
+                }
                 Model *Manager::addModel(std::string cName, std::string cFile, std::string cVertex, std::string cFragment) {
                     // Load the OBJ file
                     Files::Obj oObj(cFile);
 
                     if (m_pLogger) {
-                        m_pLogger->log("Starting Model");
+                        m_pLogger->log("Starting Model 2");
                         m_pLogger->log(std::string("Vertex: ") + cVertex);
                         m_pLogger->log(std::string("Fragment: ") + cFragment);
                         m_pLogger->log(std::string("Model File: ") + cFile);
@@ -43,7 +61,7 @@ namespace NordicArts {
 
                     m_pModels[m_iModels] = pModel;
 
-                    if (m_pLogger) { m_pLogger->log("Started Model"); }
+                    if (m_pLogger) { m_pLogger->log("Started Model 1"); }
 
                     m_iModels++;
 

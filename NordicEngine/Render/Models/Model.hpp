@@ -2,6 +2,7 @@
 #define NordicArts_NordicEngine_Render_Model_Model_H
 
 #include <NordicEngine/Engine.hpp>
+#include <NordicEngine/OS/OpenGL.hpp>
 #include <NordicEngine/Render/Shader/Shader.hpp>
 #include <NordicEngine/Logger/Logger.hpp>
 

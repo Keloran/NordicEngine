@@ -15,13 +15,13 @@ namespace NordicArts {
                 }
 
                 void Model::initalize(std::vector<glm::vec3> vVertices, int iLength, std::string cVertex, std::string cFragment) {
-                    m_oShader.initalize(cVertex, cFragment);
-
                     m_vVertices     = vVertices;
                     m_iSize         = iLength;
 
-                    GLenum eError = glGetError();
-            
+                    GLenum eError   = glGetError();
+
+                    m_oShader.initalize(cVertex, cFragment);
+
                     glGenVertexArrays(1, &m_iVertexArrayID);
                     glBindVertexArray(m_iVertexArrayID);
 

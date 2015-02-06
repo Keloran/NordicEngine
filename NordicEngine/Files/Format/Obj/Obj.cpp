@@ -76,7 +76,15 @@ namespace NordicArts {
         
                         vTempNormals.push_back(vNormal);
                     } else if (cLine.compare(0, 1, "f") == 0) { // Faces
-                        bool bFound = false;
+                        bool bFound     = false;
+                        bool bVIndex    = false;
+                        bool bUIndex    = false;
+                        bool bNIndex    = false;
+
+                        // Real Temps
+                        int iVIndex[3];
+                        int iUIndex[3];
+                        int iNIndex[3];
 
                         // Temp Vertex Index
                         int iVIndexA[3];
@@ -86,15 +94,11 @@ namespace NordicArts {
 
                         // Temp UV Index
                         int iUIndexA[3];
-                        int iUIndexB[3];
                         int iUIndexC[3];
-                        int iUIndexD[3];
 
                         // Temp Normal Index
                         int iNIndexA[3];
                         int iNIndexB[3];
-                        int iNIndexC[3];
-                        int iNIndexD[3];
 
                         // Parse the values
                         int iAll            = std::sscanf(cLine.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d\n", &iVIndexA[0], &iUIndexA[0], &iNIndexA[0], &iVIndexA[1], &iUIndexA[1], &iNIndexA[1], &iVIndexA[2], &iUIndexA[2], &iNIndexA[2]);
@@ -104,53 +108,80 @@ namespace NordicArts {
 
                         // Make sure there is some
                         if (iAll == 9) {
-                            vVertexIndicies.push_back(iVIndexA[0]);
-                            vVertexIndicies.push_back(iVIndexA[1]);
-                            vVertexIndicies.push_back(iVIndexA[2]);
-    
-                            vUVIndicies.push_back(iUIndexA[0]);
-                            vUVIndicies.push_back(iUIndexA[1]);
-                            vUVIndicies.push_back(iUIndexA[2]);
+                            iVIndex[0] = iVIndexA[0];
+                            iVIndex[1] = iVIndexA[1];
+                            iVIndex[2] = iVIndexA[2];
 
-                            vNormalIndicies.push_back(iNIndexA[0]);
-                            vNormalIndicies.push_back(iNIndexA[1]);
-                            vNormalIndicies.push_back(iNIndexA[2]);
+                            iUIndex[0] = iUIndexA[0];
+                            iUIndex[1] = iUIndexA[1];
+                            iUIndex[2] = iUIndexA[2];
 
-                            bFound = true; 
+                            iNIndex[0] = iNIndexA[0];
+                            iNIndex[1] = iNIndexA[1];
+                            iNIndex[2] = iNIndexB[1];
+
+                            bFound  = true;
+                            bVIndex = true;
+                            bUIndex = true;
+                            bNIndex = true;
                         }
                         if (iVertexNormal == 6) { 
-                            vVertexIndicies.push_back(iVIndexB[0]);
-                            vVertexIndicies.push_back(iVIndexB[1]);
-                            vVertexIndicies.push_back(iVIndexB[2]);
+                            iVIndex[0] = iVIndexB[0];
+                            iVIndex[1] = iVIndexB[1];
+                            iVIndex[2] = iVIndexB[2];
 
-                            vNormalIndicies.push_back(iNIndexB[0]);
-                            vNormalIndicies.push_back(iNIndexB[1]);
-                            vNormalIndicies.push_back(iNIndexB[2]);
+                            iNIndex[0] = iNIndexB[0];
+                            iNIndex[1] = iNIndexB[1];
+                            iNIndex[2] = iNIndexB[2];
 
-                            bFound = true; }
+                            bFound  = true; 
+                            bVIndex = true;
+                            bNIndex = true;
+                        }
                         if (iVertexTexture == 6) { 
-                            vVertexIndicies.push_back(iVIndexC[0]);
-                            vVertexIndicies.push_back(iVIndexC[1]);
-                            vVertexIndicies.push_back(iVIndexC[2]);
+                            iVIndex[0] = iVIndexC[0];
+                            iVIndex[1] = iVIndexC[1];
+                            iVIndex[2] = iVIndexC[2];
 
-                            vUVIndicies.push_back(iUIndexC[0]);
-                            vUVIndicies.push_back(iUIndexC[1]);
-                            vUVIndicies.push_back(iUIndexC[2]);
+                            iUIndex[0] = iUIndexC[0];
+                            iUIndex[1] = iUIndexC[1];
+                            iUIndex[2] = iUIndexC[2];
 
-                            bFound = true; 
+                            bFound  = true;
+                            bVIndex = true;
+                            bUIndex = true;
                         }
                         if (iVertex == 3) { 
-                            vVertexIndicies.push_back(iVIndexD[0]);
-                            vVertexIndicies.push_back(iVIndexD[1]);
-                            vVertexIndicies.push_back(iVIndexD[2]);
+                            iVIndex[0] = iVIndexD[0];
+                            iVIndex[1] = iVIndexD[1];
+                            iVIndex[2] = iVIndexD[2];
 
-                            bFound = true; 
+                            bFound  = true; 
+                            bVIndex = true;
                         }
 
                         // There are no faces so this file is invalid
                         if (!bFound) { 
                             bValid = false;
                             break;
+                        } else {
+                            if (bVIndex) {
+                                vVertexIndicies.push_back(iVIndex[0]);
+                                vVertexIndicies.push_back(iVIndex[1]);
+                                vVertexIndicies.push_back(iVIndex[2]);
+                            }
+
+                            if (bUIndex) {
+                                vUVIndicies.push_back(iUIndex[0]);
+                                vUVIndicies.push_back(iUIndex[1]);
+                                vUVIndicies.push_back(iUIndex[2]);
+                            }
+
+                            if (bNIndex) {
+                                vNormalIndicies.push_back(iNIndex[0]);
+                                vNormalIndicies.push_back(iNIndex[1]);
+                                vNormalIndicies.push_back(iNIndex[2]);
+                            }
                         }
                     } else { // Comments
                     }
