@@ -12,7 +12,7 @@ namespace NordicArts {
                 class Manager {
                 // Variables
                 public:
-                    Model *m_pModels[128];
+                    Model *m_pModels[1024];
         
                 protected:
                 private:
@@ -26,6 +26,7 @@ namespace NordicArts {
                     Manager(Logger *pLogger);
 
                     void destroy();
+                    void renderAll();
 
                     Model *addModel(std::string cName, std::vector<glm::vec3> vVerticies, std::string cVertex, std::string cFragment);
                     Model *addModel(std::string cName, std::string cFile, std::string cVertex, std::string cFragment);

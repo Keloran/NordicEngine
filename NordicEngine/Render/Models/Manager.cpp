@@ -12,13 +12,9 @@ namespace NordicArts {
                 }
 
                 void Manager::destroy() {
-                    if (m_pLogger) { m_pLogger->log("Destroying Models"); }
-
                     for (size_t i = 0; i < m_iModels; i++) {
                         m_pModels[i]->destroy();
                     }
-
-                    if (m_pLogger) { m_pLogger->log("Destroyed Models"); }
                 }
 
                 Model *Manager::addModel(std::string cName, std::vector<glm::vec3> vVerticies, std::string cVertex, std::string cFragment) {
@@ -42,13 +38,6 @@ namespace NordicArts {
                 Model *Manager::addModel(std::string cName, std::string cFile, std::string cVertex, std::string cFragment) {
                     // Load the OBJ file
                     Files::Obj oObj(cFile);
-
-                    if (m_pLogger) {
-                        m_pLogger->log("Starting Model 2");
-                        m_pLogger->log(std::string("Vertex: ") + cVertex);
-                        m_pLogger->log(std::string("Fragment: ") + cFragment);
-                        m_pLogger->log(std::string("Model File: ") + cFile);
-                    }
                     
                     std::vector<glm::vec3> vVerticies;
                     std::vector<glm::vec3> vNormals;
@@ -57,11 +46,9 @@ namespace NordicArts {
                     oObj.loadModel(vVerticies, vUVs, vNormals);
 
                     Model *pModel = new Model(cName);
-                    pModel->initalize(vVerticies, vVerticies.size(), cVertex, cFragment);
+                    pModel->setup(vVerticies, vUVs, vNormals, cVertex, cFragment);
 
                     m_pModels[m_iModels] = pModel;
-
-                    if (m_pLogger) { m_pLogger->log("Started Model 1"); }
 
                     m_iModels++;
 
@@ -70,14 +57,21 @@ namespace NordicArts {
 
                 Model *Manager::getModel(std::string cName) {
                     for (size_t i = 0; i < m_iModels; i++) {
-                        printIt(m_pModels[i]->getName());
-
                         if (cName.compare(m_pModels[i]->getName()) == 0) {
                             return m_pModels[i];
                         }
                     }
 
                     return nullptr;
+                }
+
+                void Manager::renderAll() {
+                    for (size_t i = 0; i < m_iModels; i++) {
+                        Model *pModel = m_pModels[i];
+
+                        pModel->initalize();
+                        pModel->render();
+                    }
                 }
             };
         };
