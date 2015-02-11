@@ -79,6 +79,9 @@ namespace NordicArts {
                 if (GLEW_OK != eError) {
                     throwError(__FUNCTION__, "Failed to initalize GLEW");
                 }
+                
+                // Set the viewport
+                glViewPort(0, 0, iWidth, iHeight);
 
                 return 0;
             }
